@@ -1,0 +1,44 @@
+.app {
+  padding-inline: 10%;
+  padding-block: 30px;
+  background: #1a1a1f;
+}
+
+.app-header {
+  padding: 10px;
+  background: #222127;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 3%;
+  align-items: center;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  overflow: hidden;
+  background: #f2c94c;
+  position: absolute;
+  transition: width 0.5s;
+}
+
+.progress {
+  background: #1a1a1f;
+  width: 100%;
+  height: 10px;
+  position: relative;
+}
+
+.app-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.weapon-card {
+  background: #222127;
+  padding: 10px;
+  cursor: pointer;
+}

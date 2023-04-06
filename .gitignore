@@ -1,0 +1,4 @@
+.idea
+front/node_modules/
+dev/cluster-key
+dev/.env

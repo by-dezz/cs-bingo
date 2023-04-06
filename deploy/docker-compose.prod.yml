@@ -1,0 +1,29 @@
+version: "3.9"
+
+
+x-deploy-defaults: &deploy-defaults
+  placement:
+    constraints:
+      - node.labels.worker == true
+      - node.labels.env_type == prod_local
+
+  restart_policy:
+    condition: any
+
+
+services:
+  front:
+    image: ${REGISTRY_REPOSITORY}/front:latest
+
+    networks:
+      hub:
+
+    deploy: *deploy-defaults
+
+
+networks:
+  default:
+
+  hub:
+    name: hub
+    external: true
