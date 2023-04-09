@@ -1,22 +1,13 @@
-FROM python:3.9-slim-buster
+FROM node:16.18.0 as builder
 
-# Keeps Python from generating .pyc files in the container, Turns off buffering for easier container logging
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+COPY front /front
+WORKDIR /front
 
-# Настрока времени
-ENV TZ='UTC'
-ENV DEBIAN_FRONTEND=noninteractive
+RUN npm i
+RUN npm run build
 
-RUN apt-get update
-RUN apt-get install -y  wait-for-it
 
-COPY requirements.txt /requirements.txt
-RUN pip install -r /requirements.txt
+FROM nginx:latest
 
-COPY deploy/entrypoint.sh /entrypoint.sh
-RUN chmod -R 755 /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
-
-COPY app /app
-WORKDIR /app
+COPY --from=builder /front/build /static
+COPY deploy/nginx/front.conf /etc/nginx/conf.d/default.conf
