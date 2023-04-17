@@ -1,0 +1,2 @@
+jija==0.3.2
+jija-orm

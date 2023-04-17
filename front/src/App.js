@@ -1,107 +1,102 @@
-import './App.css';
 import React from 'react';
-import {Weapons} from "./weapons";
-import Cookies from 'js-cookie'
+
+import {RouterProvider} from "react-router-dom";
+import router from "./core/router";
+
+import {
+    Box,
+    Container,
+    createTheme,
+    CssBaseline,
+    ThemeProvider
+} from "@mui/material";
+
+import UserContext from "./context/UserContext";
+import {serviceInterface} from "./services/core";
+import {getLogin} from "./services/user";
+
+import Login from "./pages/Login";
+import LoadPage from "./components/LoadPage";
+import Register from "./pages/Register";
+import FullPage from "./components/FullPage";
+
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 
 export default class App extends React.Component {
-    state = {checked: new Set()}
+    state = {
+        user: undefined,
+        loading: true,
+    }
 
     componentDidMount() {
-        let cookies = Cookies.get('checked')
-        let checked
+        getLogin().then(serviceInterface({
+            success: user => this.setState({user, loading: false}),
+            error: () => this.setState({loading: false})
+        }))
+    }
 
-        if (cookies) {
-            checked = new Set(cookies.split(','))
-            this.setState({checked})
+    renderContent() {
+        if (this.state.loading) return <LoadPage/>
+
+        if (this.state.user === undefined) {
+            let formData = {
+                changeForm: form => this.setState({form}),
+                setUser: user => this.setState({user})
+            }
+
+            if (this.state.form === 'register') return <FormBox><Register {...formData}/></FormBox>
+            else return <FormBox><Login {...formData}/></FormBox>
         }
-    }
 
-    check = (name) => {
-        let checked = this.state.checked
-
-        if (checked.has(name)) checked.delete(name)
-        else checked.add(name)
-
-        Cookies.set('checked', Array.from(checked).join(','))
-        this.setState({checked})
-    }
-
-    reset = () => {
-        Cookies.remove('checked')
-        this.setState({checked: new Set()})
+        return (
+            <Container sx={{
+                width: '100%',
+                height: '100%',
+            }}>
+                <RouterProvider router={router}/>
+            </Container>
+        )
     }
 
     render() {
         return (
-            <div className={'app'}>
-                <Header length={this.state.checked.size} reset={this.reset}/>
-                <div className={'app-body'}>
-                {Weapons.map((weapon, index) =>
-                    <WeaponCard
-                        key={index}
-                        checked={this.state.checked.has(weapon.name)}
-                        handleClick={() => this.check(weapon.name)}
-                        {...weapon}
-                    />)}
-                </div>
-            </div>
-        );
+            <UserContext.Provider value={{user: this.state.user, setUser: user => this.setState({user})}}>
+                <ThemeProvider theme={darkTheme}>
+                    <CssBaseline/>
+
+                    {this.state.loading
+                        ? <FullPage><LoadPage/></FullPage>
+                        : <RouterProvider router={router}/>
+                    }
+                </ThemeProvider>
+            </UserContext.Provider>
+        )
     }
 }
 
 
-class Header extends React.Component {
+class FormBox extends React.Component {
     render() {
         return (
-            <div className={'app-header'}>
-                <Progress value={this.props.length}/>
-                <button
-                    onClick={this.props.reset}
-                    style={{color: 'white', backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}}
+            <Box sx={{position: ''}}>
+
+                <Box
+                    sx={{
+                        top: '50%',
+                        height: '100%',
+                        width: '100%',
+                        position: 'absolute',
+                    }}
                 >
-                    Reset
-                </button>
-            </div>
-        )
-    }
-}
-
-
-class Progress extends React.Component {
-    render() {
-        return (
-            <div style={{display: "flex", gap: '2%', width: '100%', color: 'white', alignItems: 'center'}}>
-                <div style={{minWidth: '50px', textAlign: 'center'}}>
-                    {this.props.value + ' / ' + Weapons.length}
-                </div>
-
-                <div className={'progress'}>
-                    <div className={'progress-bar'} style={{width: this.props.value / Weapons.length * 100 + '%'}}/>
-                </div>
-                <div style={{minWidth: '50px', textAlign: 'center'}}>
-                    {Math.round(this.props.value / Weapons.length * 100) + ' %'}
-                </div>
-            </div>
-        )
-    }
-}
-
-
-class WeaponCard extends React.Component {
-    render() {
-        return (
-            <div
-                style={this.props.checked ? {filter: 'brightness(0.5) blur(1px)'} : undefined}
-                onClick={this.props.handleClick}
-            >
-                <div className={'weapon-card'}>
-                    <div style={{color: '#efeff5', textAlign: "center"}}>
-                        {this.props.name}
-                    </div>
-                    <img width='160px' src={this.props.image}/>
-                </div>
-            </div>
+                    {this.props.children}
+                </Box>
+            </Box>
         )
     }
 }
