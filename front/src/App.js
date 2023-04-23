@@ -37,16 +37,49 @@ export default class App extends React.Component {
             <div className={'app'}>
                 <Header length={this.state.checked.size} reset={this.reset}/>
                 <div className={'app-body'}>
-                {Weapons.map((weapon, index) =>
-                    <WeaponCard
+                {Object.entries(Weapons).map(([name, items], index) =>
+                    <Group
                         key={index}
-                        checked={this.state.checked.has(weapon.name)}
-                        handleClick={() => this.check(weapon.name)}
+                        name={name}
+                        items={items}
+                        checked={this.state.checked}
+                        check={this.check}
+                    />
+                )}
+                  </div>
+            </div>
+        );
+    }
+}
+
+
+class Group extends React.Component {
+    render() {
+        return (
+            <div style={{background: '#222127', padding: '10px'}}>
+                <div style={{color: '#efeff5', textAlign: "center", paddingBottom: '10px'}}>
+                    {this.props.name}
+                </div>
+
+                <div style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '10px',
+                    justifyContent: 'start'
+                    // display: 'flex',
+                    // flexWrap: 'wrap',
+                    // gap: '2%'
+                }}>
+                    {this.props.items.map((weapon, index) =>
+                        <WeaponCard
+                        key={index}
+                        checked={this.props.checked.has(weapon.name)}
+                        handleClick={() => this.props.check(weapon.name)}
                         {...weapon}
                     />)}
                 </div>
             </div>
-        );
+        )
     }
 }
 

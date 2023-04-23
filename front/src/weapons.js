@@ -38,56 +38,105 @@ import M249 from './assets/m249.png'
 import Negev from './assets/negev.png'
 
 
-const Rifles = [
-    {name: 'Galil AR', image: GalilAR},
+const CounterTerroristsPistols = [
+    {name: 'USP-S', image: USPS},
+    {name: 'P2000', image: P2000},
+]
+
+const CounterTerroristsSMGs = [
+    {name: 'MP9', image: MP9},
+]
+
+const CounterTerroristsRifles = [
     {name: 'FAMAS', image: FAMAS},
-    {name: 'AK-47', image: AK47},
     {name: 'M4A4', image: M4A4},
     {name: 'M4A1-S', image: M4A1S},
     {name: 'AUG', image: AUG},
-    {name: 'SSG 08', image: SSG08},
-    {name: 'SG 553', image: SG553},
-    {name: 'AWP', image: AWP},
-    {name: 'SCAR-20', image: SCAR20},
     {name: 'G3SG1', image: G3SG1},
 ]
 
-const Pistols = [
-    {name: 'USP-S', image: USPS},
+const CounterTerroristsHeavy = [
+    {name: 'MAG-7', image: MAG7},
+]
+
+
+const CounterTerrorists = [
+    ...CounterTerroristsPistols,
+    ...CounterTerroristsSMGs,
+    ...CounterTerroristsRifles,
+    ...CounterTerroristsHeavy
+]
+
+const TerroristsPistols = [
     {name: 'Glock-18', image: Glock18},
-    {name: 'P2000', image: P2000},
+    {name: 'Tec-9', image: Tec9},
+
+]
+
+const TerroristsSMGs = [
+    {name: 'MAC-10', image: MAC10},
+
+]
+
+const TerroristsHeavy = [
+    {name: 'Sawed-Off', image: SawedOff},
+]
+
+const TerroristsRifles = [
+    {name: 'Galil AR', image: GalilAR},
+    {name: 'AK-47', image: AK47},
+    {name: 'SSG 08', image: SSG08},
+    {name: 'SCAR-20', image: SCAR20},
+
+]
+
+const Terrorists = [
+    ...TerroristsPistols,
+    ...TerroristsSMGs,
+    ...TerroristsRifles,
+    ...TerroristsHeavy
+]
+
+const AllPistols = [
     {name: 'Dual Berettas', image: DualBerettas},
     {name: 'P250', image: P250},
-    {name: 'Tec-9', image: Tec9},
     {name: 'CZ75-Auto', image: CZ75Auto},
     {name: 'Five-SeveN', image: FiveSeven},
     {name: 'Revolver R8', image: RevolverR8},
     {name: 'Desert Eagle', image: DesertEagle}
 ]
 
-const SMGs = [
-    {name: 'MAC-10', image: MAC10},
+const AllSMGs = [
     {name: 'MP7', image: MP7},
-    {name: 'MP9', image: MP9},
     {name: 'MP5-SD', image: MP5SD},
     {name: 'UMP-45', image: UMP45},
     {name: 'P90', image: P90},
     {name: 'PP-Bizon', image: PPBizon},
 ]
 
-const Heavy = [
+const AllRifles = [
+    {name: 'SG 553', image: SG553},
+    {name: 'AWP', image: AWP},
+
+]
+
+const AllHeavy = [
     {name: 'Nova', image: Nova},
     {name: 'XM1014', image: XM1014},
-    {name: 'Sawed-Off', image: SawedOff},
-    {name: 'MAG-7', image: MAG7},
     {name: 'M249', image: M249},
     {name: 'Negev', image: Negev},
 ]
 
-
-export const Weapons = [
-    ...Rifles,
-    ...Pistols,
-    ...SMGs,
-    ...Heavy,
+const All = [
+    ...AllPistols,
+    ...AllSMGs,
+    ...AllRifles,
+    ...AllHeavy
 ]
+
+
+export const Weapons = {
+    CounterTerrorists: CounterTerrorists,
+    Terrorists: Terrorists,
+    All: All,
+}
