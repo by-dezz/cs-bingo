@@ -10,29 +10,16 @@ services:
       SECRET_KEY: ${SECRET_KEY}
 
     networks:
-      hub:
       postgres:
 
     deploy:
       update_config:
         order: start-first
 
-  front:
-    image: registry.dezz.space/cs_bingo/front:latest
-
-    networks:
-      hub:
-
-    deploy:
-      update_config:
-        order: start-first
+    command: ["migrate"]
 
 
 networks:
-  hub:
-    name: hub
-    external: true
-
   postgres:
     name: postgres
     external: true

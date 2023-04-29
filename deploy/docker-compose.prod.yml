@@ -2,6 +2,22 @@ version: "3.9"
 
 
 services:
+  back:
+    image: registry.dezz.space/cs_bingo/back:latest
+
+    environment:
+      PG_PASS: ${PG_PASS}
+      SECRET_KEY: ${SECRET_KEY}
+
+    networks:
+      postgres:
+
+    deploy:
+      update_config:
+        order: start-first
+
+    command: [ "server" ]
+
   front:
     image: registry.dezz.space/cs_bingo:latest
 
@@ -16,4 +32,8 @@ services:
 networks:
   hub:
     name: hub
+    external: true
+
+  postgres:
+    name: postgres
     external: true
