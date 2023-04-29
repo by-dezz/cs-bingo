@@ -17,6 +17,7 @@ import WeaponsGrid from "./WeaponsGrid";
 class Room extends React.Component {
     state = {data: null}
     ws = null
+    pingInterval = null
 
     componentDidMount() {
         getRoom(this.props.locationParams.id).then(serviceInterface({
@@ -34,6 +35,10 @@ class Room extends React.Component {
             if (data.type === 'check') return this.handleCheck(data.data)
             if (data.type === 'join') return this.handleJoin(data.data)
         }
+
+        this.pingInterval = setInterval(() => {
+            this.ws.send(JSON.stringify({type: 'ping'}))
+        }, 10000)
     }
 
     handleCheck = (data) => {

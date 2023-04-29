@@ -131,6 +131,8 @@ class RoomWS(views.WSView):
         message = json.loads(message)
         if message['type'] == 'check':
             await self.handle_check(message['data'])
+        elif message['type'] == 'ping':
+            await self.send({'type': 'pong'})
 
     def get_room_socket(self):
         return self.ROOMS_SOCKETS.get(self.request.match_info['uuid'])
