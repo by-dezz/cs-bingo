@@ -19,7 +19,7 @@ services:
     command: [ "server" ]
 
   front:
-    image: registry.dezz.space/cs_bingo:latest
+    image: registry.dezz.space/cs_bingo/front:latest
 
     networks:
       hub:
