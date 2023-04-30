@@ -4,18 +4,9 @@ from . import serializers
 
 class Login(views.SerializedView, views.DocMixin):
     async def get(self):
-        from jija_orm import config
-        best = await (await config.JijaORM.get_connection()).fetch(f'''
-            select max(stat)
-            from stats
-            where user_id = {self.request.user.id}
-            group by user_id
-        ''')
-
         return response.JsonResponse({
             'id': self.request.user.id,
             'name': self.request.user.username,
-            'best': best[0]['max'] if best else 0
         })
 
     async def post(self, data: serializers.Login):

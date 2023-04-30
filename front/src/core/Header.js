@@ -19,6 +19,7 @@ import {serviceInterface} from "../services/core";
 
 import UserContext from "../context/UserContext";
 import withNavigate from "../decorators/withNavigate";
+import withStats from "../decorators/withStats";
 
 
 class Header extends React.Component {
@@ -80,12 +81,14 @@ class UserIcon extends React.Component {
     render() {
         return (
             <Stack direction={'row'} spacing={3} sx={{alignItems: 'center'}}>
-                <Stack spacing={0.5} direction={'row'}>
-                    <Typography>
-                        {this.props.user.best}
-                    </Typography>
-                    <StarIcon/>
-                </Stack>
+                {this.props.stats &&
+                    <Stack spacing={0.5} direction={'row'}>
+                        <Typography>
+                            {this.props.stats}
+                        </Typography>
+                        <StarIcon/>
+                    </Stack>
+                }
 
                 <IconButton
                     onClick={event => this.setState({anchor: event.target})}
@@ -110,3 +113,6 @@ class UserIcon extends React.Component {
         )
     }
 }
+
+
+UserIcon = withStats(UserIcon)

@@ -13,6 +13,7 @@ import CenterBox from "../../components/CenterBox";
 import Header from "./Header";
 import WeaponsGrid from "./WeaponsGrid";
 import withUser from "../../decorators/withUser";
+import withStats from "../../decorators/withStats";
 
 
 class Room extends React.Component {
@@ -39,8 +40,12 @@ class Room extends React.Component {
         this.ws.onmessage = event => {
             let data = JSON.parse(event.data)
             if (data.type === 'check') return this.handleCheck(data.data)
-            if (data.type === 'close') return this.props.navigate('/rooms')
             if (data.type === 'join') return this.handleJoin(data.data)
+            if (data.type === 'close') {
+                this.props.updateStats()
+                this.props.navigate('/rooms')
+                return
+            }
         }
 
         this.pingInterval = setInterval(() => {
@@ -98,6 +103,7 @@ class Room extends React.Component {
     }
 
     render() {
+        console.log(this.props)
         if (this.state.data === null) {
             return (
                 <CenterBox>
@@ -122,5 +128,5 @@ class Room extends React.Component {
 }
 
 
-Room = withNavigate(Room)
+Room = withNavigate(withStats(Room))
 export default Room

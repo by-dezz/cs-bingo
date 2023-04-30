@@ -3,10 +3,8 @@ import React from "react";
 import {Button, IconButton} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-import withNavigate from "../../decorators/withNavigate";
-
 import {close} from "../../services/room";
-import {serviceInterface} from "../../services/core";
+import withNavigate from "../../decorators/withNavigate";
 
 
 class CloseRoom extends React.Component {
@@ -17,11 +15,7 @@ class CloseRoom extends React.Component {
                 <Button
                     variant={'contained'}
                     color={'error'}
-                    onClick={() => {
-                        close(this.props.locationParams.id).then(serviceInterface({
-                            success: () => this.props.navigate('/rooms')
-                        }))
-                    }}
+                    onClick={() => close(this.props.locationParams.id)}
                 >
                     Confirm
                 </Button>
