@@ -48,7 +48,9 @@ class Header extends React.Component {
                                     user
                                         ? <UserIcon user={user} setUser={setUser}/>
                                         : <Button
-                                            onClick={() => setUser(undefined)}
+                                            onClick={
+                                                () => this.props.navigate('/login?redirect=' + document.location.pathname)
+                                            }
                                             color="inherit"
                                         >
                                             Login

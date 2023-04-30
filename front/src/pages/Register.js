@@ -29,11 +29,13 @@ class Register extends React.Component {
         confirm_password: '',
         loading: false,
         errors: {},
-        redirect: '/'
+        redirect: '/',
+        requireLogin: false
     }
 
     componentDidMount() {
-        this.setState({redirect: new URLSearchParams(document.location.search).get('redirect')})
+        let search = new URLSearchParams(document.location.search)
+        this.setState({redirect: search.get('redirect'), requireLogin: search.get('require') ?? false})
     }
 
     register = () => {
@@ -108,14 +110,14 @@ class Register extends React.Component {
                         <Card sx={{width: "100%"}}>
                             <CardActions sx={{justifyContent: 'space-between'}}>
                                 <Button
-                                    onClick={() => this.props.navigate(`/login?redirect=${this.state.redirect}`)}
+                                    onClick={() => this.props.navigate(`/login?redirect=${this.state.redirect}&require=${this.state.requireLogin}`)}
                                 >
                                     Use existed account
                                 </Button>
                                 <Button
                                     onClick={() => {
                                         this.props.setUser(null)
-                                        this.props.navigate(this.state.redirect)
+                                        this.props.navigate(this.state.requireLogin ? '/' : this.state.redirect)
                                     }}
                                     color={'warning'}
                                 >

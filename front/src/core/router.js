@@ -6,10 +6,12 @@ import UserRooms from "../pages/UserRooms";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Room from "../pages/Room";
-import Root from "./Root";
+import Root from "./middlewares/HeaderMiddleware";
 import SoloRoom from "../pages/SoloRoom";
 import withNavigate from "../decorators/withNavigate";
 import withStats from "../decorators/withStats";
+import HeaderMiddleware from "./middlewares/HeaderMiddleware";
+import AuthMiddleware from "./middlewares/AuthMiddleware";
 
 
 export default createBrowserRouter([
@@ -23,31 +25,29 @@ export default createBrowserRouter([
   },
   {
     path: "/",
-    element: <Root/>,
+    element: <HeaderMiddleware/>,
     children: [
       {
         path: "/",
         element: <Home/>,
       },
       {
-        path: "/rooms",
-        element: <UserRooms/>,
-      },
-      {
-        path: "/login",
-        element: <Login/>
-      },
-      {
-        path: "/register",
-        element: <Register/>
-      },
-      {
-        path: "/room/:id",
-        element: <Room/>,
-      },
-      {
         path: "/solo",
         element: <SoloRoom/>,
+      },
+      {
+        path: "/",
+        element: <AuthMiddleware/>,
+        children: [
+          {
+            path: "/rooms",
+            element: <UserRooms/>,
+          },
+          {
+            path: "/room/:id",
+            element: <Room/>,
+          },
+        ]
       }
     ]
   }

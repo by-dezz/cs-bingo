@@ -28,11 +28,13 @@ class Login extends React.Component {
         password: '',
         loading: false,
         error: null,
-        redirect: '/'
+        redirect: '/',
+        requireLogin: false
     }
 
     componentDidMount() {
-        this.setState({redirect: new URLSearchParams(document.location.search).get('redirect')})
+        let search = new URLSearchParams(document.location.search)
+        this.setState({redirect: search.get('redirect'), requireLogin: search.get('require') ?? false})
     }
 
     login = () => {
@@ -91,7 +93,7 @@ class Login extends React.Component {
                         <Card sx={{width: "100%"}}>
                             <CardActions sx={{justifyContent: 'space-between'}}>
                                 <Button
-                                    onClick={() => this.props.navigate(`/register?redirect=${this.state.redirect}`)}
+                                    onClick={() => this.props.navigate(`/register?redirect=${this.state.redirect}&require=${this.state.requireLogin}`)}
                                 >
                                     Create new account
                                 </Button>
@@ -99,7 +101,7 @@ class Login extends React.Component {
                                 <Button
                                     onClick={() => {
                                         this.props.setUser(null)
-                                        this.props.navigate(this.state.redirect)
+                                        this.props.navigate(this.state.requireLogin ? '/' : this.state.redirect)
                                     }}
                                     color={'warning'}
                                 >
