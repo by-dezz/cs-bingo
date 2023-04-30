@@ -12,6 +12,7 @@ import withNavigate from "../../decorators/withNavigate";
 import CenterBox from "../../components/CenterBox";
 import Header from "./Header";
 import WeaponsGrid from "./WeaponsGrid";
+import withUser from "../../decorators/withUser";
 
 
 class Room extends React.Component {
@@ -28,17 +29,23 @@ class Room extends React.Component {
         }))
     }
 
+    componentWillUnmount() {
+        if (this.ws) this.ws.close()
+        if (this.pingInterval) clearInterval(this.pingInterval)
+    }
+
     initWebSocket() {
         this.ws = new WebSocket(`ws://${document.location.host}/api/room/ws/${this.props.locationParams.id}/`)
         this.ws.onmessage = event => {
             let data = JSON.parse(event.data)
             if (data.type === 'check') return this.handleCheck(data.data)
+            if (data.type === 'close') return this.props.navigate('/rooms')
             if (data.type === 'join') return this.handleJoin(data.data)
         }
 
         this.pingInterval = setInterval(() => {
             this.ws.send(JSON.stringify({type: 'ping'}))
-        }, 10000)
+        }, 5000)
     }
 
     handleCheck = (data) => {

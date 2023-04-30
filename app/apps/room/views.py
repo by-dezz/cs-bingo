@@ -22,7 +22,7 @@ class Room(views.SerializedView, views.DocMixin):
         room_data = await models.UserRoomData.where(room=room, user=self.request.user)
         if not room_data:
             await models.UserRoomData.insert(room=room, user=self.request.user, checked='')
-            for socket in RoomWS.ROOMS_SOCKETS[room_serializer.data['uuid']]:
+            for socket in RoomWS.ROOMS_SOCKETS.get(room_serializer.data['uuid'], []):
                 await socket.send({
                     'type': 'join',
                     'data': {
@@ -189,4 +189,10 @@ class Close(views.SerializedView, views.DocMixin):
             to_create.append({'user': data.user, 'stat': len(checked)})
 
         await stats_models.Stats.multiple_create(to_create)
+
+        for socket in RoomWS.ROOMS_SOCKETS.get(room_serializer.data['uuid'], []):
+            await socket.send({
+                'type': 'close',
+            })
+
         return response.Response()
