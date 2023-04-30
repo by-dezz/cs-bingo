@@ -12,7 +12,6 @@ import withNavigate from "../../decorators/withNavigate";
 import CenterBox from "../../components/CenterBox";
 import Header from "./Header";
 import WeaponsGrid from "./WeaponsGrid";
-import withUser from "../../decorators/withUser";
 import withStats from "../../decorators/withStats";
 
 

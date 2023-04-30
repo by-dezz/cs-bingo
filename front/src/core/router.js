@@ -7,6 +7,9 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Room from "../pages/Room";
 import Root from "./Root";
+import SoloRoom from "../pages/SoloRoom";
+import withNavigate from "../decorators/withNavigate";
+import withStats from "../decorators/withStats";
 
 
 export default createBrowserRouter([
@@ -30,7 +33,6 @@ export default createBrowserRouter([
         path: "/rooms",
         element: <UserRooms/>,
       },
-
       {
         path: "/login",
         element: <Login/>
@@ -42,6 +44,10 @@ export default createBrowserRouter([
       {
         path: "/room/:id",
         element: <Room/>,
+      },
+      {
+        path: "/solo",
+        element: <SoloRoom/>,
       }
     ]
   }
