@@ -35,7 +35,8 @@ class Room extends React.Component {
     }
 
     initWebSocket() {
-        this.ws = new WebSocket(`wss://${document.location.host}/api/room/ws/${this.props.locationParams.id}/`)
+        let protocol = document.location.protocol === 'https:' ? 'wss:' : 'ws:'
+        this.ws = new WebSocket(`${protocol}//${document.location.host}/api/room/ws/${this.props.locationParams.id}/`)
         this.ws.onmessage = event => {
             let data = JSON.parse(event.data)
             if (data.type === 'check') return this.handleCheck(data.data)
